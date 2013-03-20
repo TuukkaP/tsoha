@@ -1,16 +1,10 @@
 <?php
-include('dbconnect.php');
-session_start();
-$user_check=$_SESSION['login_user'];
 
-$ses_sql=mysql_query("select username from users where username='$user_check' ");
+require_once 'tools/queries.php';
+require_once 'tools/session.php';
 
-$row=mysql_fetch_array($ses_sql);
-
-$login_session=$row['username'];
-
-if(!isset($login_session))
-{
-header("Location: login.php");
-}
+    if (!isset($session->username)) {
+        header("Location: index.php");
+    }
 ?>
+

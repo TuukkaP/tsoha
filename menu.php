@@ -1,5 +1,5 @@
 <?php
-include('lock.php');
+include ('lock.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,9 +8,7 @@ include('lock.php');
         <title></title>
     </head>
     <body>
-        <h1>Welcome <?php echo $login_session; ?></h1>
-        <?php
-        // put your code here
-        ?>
+        <h1>Welcome <?php echo $session->username; ?></h1>
+        <a href="logout.php">Logout</a>
     </body>
 </html>
