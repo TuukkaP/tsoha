@@ -1,6 +1,7 @@
 <?php
 try {
-    $pdo = new PDO('pgsql:host=localhost;dbname=peuranie', 'peuranie', 'caa0b83bc9393e6e');
+    $pdo = new PDO(pgsql:host=localhost;dbname=ivahamaa",
+                      "ivahamaa", "49fbd656411c2b0d");
 } catch (PDOException $e) {
     die("VIRHE: " . $e->getMessage());
 }
