@@ -6,16 +6,24 @@ class Session {
     session_start();
   }
 
-  public function __set($key, $user) {
-    $_SESSION[$key] = $user;
-  }
-
-  public function __get($user) {
-    if ($this->__isset($user)) {
-      return $_SESSION[$user];
+    public function setSession($key, $user, $key2, $role) {
+        $_SESSION[$key] = $user;
+        $_SESSION[$key2] = $role;
     }
-    return null;
-  }
+
+    public function __get($user) {
+        if ($this->__isset($user)) {
+            return $_SESSION[$user];
+        }
+        return null;
+    }
+    
+    public function getRole() {
+        if ($this->__isset('role')) {
+            return $_SESSION['role'];
+        }
+        return null;
+    }
 
   public function __isset($user) {
     return isset($_SESSION[$user]);

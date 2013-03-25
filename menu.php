@@ -8,7 +8,10 @@ include ('lock.php');
         <title> Company ab - Workscheduling</title>
     </head>
     <body>
-        <h1>Welcome <?php echo $session->username; ?></h1>
+        <h1>Welcome <?php echo $session->username; ?></h1><br>
+        
+        Olet <?php echo $session->getRole(); ?>!!! <br>
+        <a href="listUsers.php">List users</a>
         <a href="logout.php">Logout</a>
 
         <h1>Ominaisuuksia to be built</h1>
