@@ -9,8 +9,9 @@ class Queries {
     }
 
     public function login($username, $password) {
+        $hashedpassword = hash("sha256", $password.$username);
         $sql = $this->_pdo->prepare('SELECT username,role FROM users WHERE username = ? AND password = ?');
-        if ($sql->execute(array($username, $password))) {
+        if ($sql->execute(array($username, $hashedpassword))) {
             return $sql->fetchObject();
         } else {
             return null;

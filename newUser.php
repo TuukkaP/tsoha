@@ -3,7 +3,7 @@ include ('lock.php');
 if(isset($_POST['add'])) {
     $add = $queries->addUser(
             filter_var($_POST['username'], FILTER_SANITIZE_STRING),
-            filter_var($_POST['password'], FILTER_SANITIZE_STRING),
+            hash("sha256", filter_var($_POST['password'], FILTER_SANITIZE_STRING).filter_var($_POST['username'], FILTER_SANITIZE_STRING)),
             filter_var($_POST['firstname'], FILTER_SANITIZE_STRING), 
             filter_var($_POST['lastname'], FILTER_SANITIZE_STRING), 
             filter_var($_POST['address'], FILTER_SANITIZE_STRING), 
