@@ -3,7 +3,7 @@
 class Session {
 
   public function __construct() {
-    session_start();
+      session_start();
   }
 
     public function setSession($key, $user, $key2, $role) {

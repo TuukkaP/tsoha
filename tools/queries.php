@@ -34,12 +34,36 @@ class Queries {
         return null;
     }
 
-    public function updateUsers($username, $firstname, $lastname, $address, $email) {
-        $sql = $this->_pdo->prepare('UPDATE users SET username = ?,firstname = ?,lastname = ?,address=?,email=? WHERE username = ?');
-        if ($sql->execute(array($username, $firstname, $lastname, $address, $email, $username))) {
+    public function addUser($username, $password, $firstname, $lastname, $address, $email, $role) {
+        $sql = $this->_pdo->prepare('INSERT INTO users (username,password,firstname,lastname,address,email,role) VALUES (?,?,?,?,?,?,?)');
+        if ($sql->execute(array($username, $password, $firstname, $lastname, $address, $email, $role))) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getUser($username) {
+        $sql = $this->_pdo->prepare('SELECT username,firstname,lastname,address,email FROM users WHERE username = ?');
+        if ($sql->execute(array($username))) {
             return $sql->fetchObject();
+        }
+        return null;
+    }
+
+    public function deleteUser($username) {
+        $sql = $this->_pdo->prepare('DELETE FROM users WHERE username = ?');
+        if ($sql->execute(array($username))) {
+            return true;
+        }
+        return false;
+    }
+
+    public function updateUser($username, $firstname, $lastname, $address, $email, $role) {
+        $sql = $this->_pdo->prepare('UPDATE users SET username = ?,firstname = ?,lastname = ?,address=?,email=?,role=? WHERE username = ?');
+        if ($sql->execute(array($username, $firstname, $lastname, $address, $email, $role, $username))) {
+            return true;
         } else {
-            return null;
+            return false;
         }
     }
 
