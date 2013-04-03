@@ -10,7 +10,8 @@ include ('lock.php');
     <body>
         <h1>Welcome <?php echo $session->username; ?></h1><br>
         
-        Olet <?php echo $session->getRole(); ?>!!! <br>
+        Olet <?php echo $session->getRole(); 
+        phpinfo(); ?>!!! <br>
         <a href="listUsers.php">List users</a>
         <a href="logout.php">Logout</a>
 
