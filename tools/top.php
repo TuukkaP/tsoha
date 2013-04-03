@@ -16,6 +16,16 @@ include ('lock.php');
             ?>
             <a href="logout.php">Logout</a>;
         </p>        
-    </body>    
+    <div id="navcontainer">
+            <ul id="navlist"> 
+                <li id="active"><a href="#" id="current">Item one</a></li>
+                <li><a href="#">pylly</a></li>
+                <li><a href="#">Item three</a></li>
+                <li><a href="#">pissa</a></li>
+                <li><a href="#">kakka</a></li>
+            </ul>
+        </div>
+
+</body>    
 </html>
 
