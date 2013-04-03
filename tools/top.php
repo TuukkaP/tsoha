@@ -5,7 +5,7 @@ include ('lock.php');
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title> Company ab - Workscheduling</title>
-        <link rel="styles" type="text/css" href="styles.css">
+        <link rel="stylesheet" type="text/css" href="styles.css">
     </head>
     <body>
         <p style="text-align:right;">

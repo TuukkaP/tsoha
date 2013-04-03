@@ -1,5 +1,5 @@
 <?php
-include ('top.php');
+require ('top.php');
 ?>
 
 <!DOCTYPE html>
