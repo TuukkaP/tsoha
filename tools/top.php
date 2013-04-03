@@ -11,8 +11,8 @@ include ('lock.php');
     <body>
         <p style="text-align:right;">
             <?php  
-            echo date('l, F jS, Y');
-            echo $session->username;           
+            echo date('D, d-m-Y'), '<br>';
+            echo $session->username, '<br>';           
             ?>
             <a href="logout.php">Logout</a>;
         </p>        
