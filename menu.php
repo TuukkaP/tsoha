@@ -1,5 +1,6 @@
 <?php
 include ('lock.php');
+require 'tools/top.php';
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +12,7 @@ include ('lock.php');
         Olet <?php echo $session->getRole(); ?>!!! <br>
         <a href="listUsers.php">List users</a>
         <a href="logout.php">Logout</a>
-        <a href="top.php">Logout</a>
+        <a href="top.php">top</a>
 
         <h1>Ominaisuuksia to be built</h1>
 
