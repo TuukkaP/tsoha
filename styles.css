@@ -1,6 +1,12 @@
 
 
-root { 
-    display: block;
+#navlist li {
+    list-style-type: none;
+    display: inline;
+    font-size: 20px;   
 }
 
+#navlist a { 
+    padding: 3px 10px; 
+    background-color: #ffcc00;
+}
