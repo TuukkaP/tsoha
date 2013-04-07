@@ -6,12 +6,7 @@ class UserInfo extends Controller {
     
     function __construct() {
         parent::__construct();
-        Session::init();
-        if (Session::get('login') == false) {
-            echo 'BÄÄÄÄÄÄÄ';
-            header('location: ' . URL . 'login');
-            exit;
-        }
+        Lock::checkLogin();
     }
 
     public function index() {

@@ -6,17 +6,7 @@ class Main extends Controller {
 
     function __construct() {
         parent::__construct();
-//        if (!isset($_SESSION('username'))) {
-//            header('location: ../login');
-//            exit;
-//        }
-        Session::init();
-        $logged = Session::get('login');
-        if ($logged == false) {
-            Session::destroy();
-            header('location: ../login');
-            exit;
-        }
+        Lock::checkLogin();
     }
 
     function index() {

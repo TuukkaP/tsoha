@@ -1,6 +1,6 @@
 <?php
 require_once LIBS.'View.php';
-//require_once LIBS.'Session.php';
+
 class Controller {
     
     public function __construct() {

@@ -73,12 +73,6 @@ form input[type=submit]:hover {
 
 form br {clear: left;}
 
-.UserTable {
-    width:50%;
-    margin:0px;padding:0px;
-    /*border:1px solid #000000;*/
-
-}
 .UserTable table{
     border-collapse:collapse;
     margin:0px;padding:0px;
@@ -91,6 +85,16 @@ form br {clear: left;}
 
 }
 
+.OrdersTable table{
+    border-collapse:collapse;
+    margin:0px;padding:0px;
+}
 
+.OrdersTable td,th {
+    width: 12.5%;
+    margin:0px;padding:5px;
+    border:1px solid #000000;
+
+}
 
 

@@ -6,11 +6,7 @@ class Places extends Controller {
 
     function __construct() {
         parent::__construct();
-        Session::init();
-        if (Session::get('login') == false || Session::get('role') != 'admin') {
-            header('location: ' . URL . 'main');
-            exit;
-        }
+        Lock::checkAdmin();
     }
 
     public function index() {
