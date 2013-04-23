@@ -1,20 +1,22 @@
-<!DOCTYPE html>
 <?php
-include("dbconnect.php");
+
+require 'config.php';
+require_once LIBS.'FrontController.php';
+require_once LIBS.'Session.php';
+require 'tools/lock.php';
+
+// Also spl_autoload_register (Take a look at it if you like)
+function __autoload($class) {
+    if (file_exists(LIBS . strtolower($class) .".php") )
+    {
+      require LIBS . strtolower($class) .".php";
+    }
+	
+}
+
+
+$app = new FrontController();
+$app->run();
+
+
 ?>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
-    </head>
-    <body>
-        <h1>Welcome :: Login</h1>
-        <form action="login.php" method="post">
-            <label>UserName :</label>
-            <input type="text" name="username"/><br />
-            <label>Password :</label>
-            <input type="password" name="password"/><br/>
-            <input type="submit" value=" Submit "/><br />
-        </form>
-    </body>
-</html>
