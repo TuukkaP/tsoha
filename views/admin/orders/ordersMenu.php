@@ -80,7 +80,7 @@ echo "<h1>Tilaukset :: " . $showDate->format("j.n.y") . "-" . $showDate->modify(
     </select><br>
     <label>&nbsp;</label><input type="submit" value="Hae" name="" />
 </form>
-<a href="<?php echo URL . 'orders/addOrder/' . $this->begin->format('j.n.y'); ?>">Lisää vuoro</a> <br>
+<a href="<?php echo URL . 'orders/addOrder/'; ?>">Lisää vuoro</a> <br>
 <br>
 <?php echo "Työvuoroja löytyi " . $this->currentWeekSetList->countOrders(); ?>
 <br>

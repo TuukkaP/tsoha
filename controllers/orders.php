@@ -29,18 +29,24 @@ class Orders extends Controller {
     function editOrder($id) {
         $this->view->order = $this->model->getOrder($id);
         $this->view->places = $this->model->getPlaces();
-        $this->view->users = $this->model->getUsersForOrderDate($id);
+        $this->view->users = $this->model->getUsersForOrderId($id);
         $this->view->render('admin/orders/edit');
     }
 
     function addOrder($date = null, $place_id = null) {
         $this->view->place_id = $place_id;
         if ($date != null) {
-            $this->view->date = $date;
+            $dateTime = DateTime::createFromFormat('j.n.y', $date);
+            $this->view->date = $dateTime->format('j.n.y');
+            $this->view->users = $this->model->getUsersForOrderDate($dateTime);
         } else {
+            if (isset($_SESSION["date"])) {
+                $this->view->date = Session::get("date");
+            } else {
             $this->view->date = $this->model->getDate(null)->format('j.n.y');
+            }
+            $this->view->users = $this->model->getUserList();
         }
-        $this->view->users = $this->model->getUserList();
         $this->view->places = $this->model->getPlaces();
         $this->view->render('admin/orders/create');
     }

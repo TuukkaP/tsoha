@@ -8,5 +8,8 @@ if (isset($this->msg)) {
 <form action="<?php echo URL ?>login/login" method="post">
 	<label>Login</label><input type="text" name="username" /><br />
 	<label>Password</label><input type="password" name="password" /><br />
-	<label></label><input type="submit" />
+	<label></label><input type="submit" value="Login"/>
 </form>
+<br>
+<br>
+<a href="<?php echo URL ?>passwordReset/">Unohditko salasanasi</a>

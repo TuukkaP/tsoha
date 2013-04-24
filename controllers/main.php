@@ -24,7 +24,7 @@ class Main extends Controller {
         if ($logged == true) {
             Session::destroy();
             $this->view->msg = 'Kirjauduit ulos!';
-            $this->view->render('index/secret');
+            $this->view->render('index/index');
             exit;
         }
     }

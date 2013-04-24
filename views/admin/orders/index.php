@@ -13,7 +13,7 @@ if (isset($this->msg)) {
 //    $weekday = new DateTime('2013-01-01');
     for ($i = 0; $i < 4; $i++):
         ?>
-        <table>
+        <table class="OrdersTable">
             <thead> 
                 <tr>
                     <th>Paikka</th>
@@ -46,6 +46,7 @@ if (isset($this->msg)) {
                                 }
                                 echo "</a>";
                             }
+                            echo "<a href=\"" . URL . "orders/addOrder/" . $weekdays[$j] . "/" . $place_index . "\">Lisää vuoro</a>";
                         } else {
                             echo "<a href=\"" . URL . "orders/addOrder/" . $weekdays[$j] . "/" . $place_index . "\">Ei vuoroa</a>";
                         }

@@ -74,12 +74,16 @@ $origDate = DateTime::createFromFormat('j.n.y', $this->date);
             <td>
                 <select name="user_id" value="options">
                     <option value="none">Ei tekijää</option>
-                    <?php
-                    foreach ($this->users as $user) {
-                        echo "<option value=\"" . $user["id"] . "\"";
-                        echo ">" . $user["name"] . "</option>";
-                    }
-                    ?>
+                        <?php
+                        foreach ($this->users as $user) {
+                            echo "<option value=\"" . $user["id"] . "\"";
+                            echo ">" . $user["name"];
+                            if (isset($user["place_name"]) || isset($user["time"])) {
+                                echo "   (" . $user["place_name"] . ", " . $user["time"] . ")";
+                            }
+                            echo "</option>";
+                        }
+                        ?>
                 </select>
             </td>
             <td><input type="submit" value="Lisää" name="submit"/></form></td>

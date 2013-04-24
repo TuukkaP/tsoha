@@ -9,7 +9,7 @@ class PlacesModel extends Model {
     }
 
     public function placesList() {
-        $sql = $this->db->prepare("SELECT * FROM places");
+        $sql = $this->db->prepare("SELECT * FROM places ORDER BY name, address");
         if ($sql->execute()) {
             return $sql->fetchAll();
         }

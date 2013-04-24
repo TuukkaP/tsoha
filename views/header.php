@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>Hederi</title>
+        <title>Työvuorot</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="<?php echo URL; ?>public/css/default.css" />	
 
@@ -9,12 +9,11 @@
     <body>
         <?php Session::init(); ?>
 
-        <div id="header">
+        <div id="header" >
 
 
             <?php if (Session::get('login') == false): ?>
-                <a href="<?php echo URL; ?>index">Index</a>
-                <a href="<?php echo URL; ?>test">Test</a>
+                <a href="<?php echo URL; ?>index">Etusivu</a>
                 <a href="<?php echo URL; ?>login/">Login</a>
             <?php else: ?>
                 <a href="<?php echo URL; ?>main/">Main</a>              

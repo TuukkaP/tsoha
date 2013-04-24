@@ -123,7 +123,7 @@ class OrdersModel extends Model {
         return null;
     }
 
-    public function getUsersForOrderDate($id) {
+    public function getUsersForOrderId($id) {
         $sql = $this->db->prepare("SELECT o.order_id, o.place_id, o.place_name, o.date, u.id, CONCAT( u.firstname, ' ', u.lastname ) AS name, o.time
                                     FROM users u LEFT JOIN (
                                     SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
@@ -132,6 +132,20 @@ class OrdersModel extends Model {
                                     AND o.date = (SELECT date FROM orders WHERE id = :id )
                                     ) AS o ON u.id = o.user_id");
         if ($sql->execute(array("id" => filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
+            return $sql->fetchAll();
+        }
+        return null;
+    }
+    
+        public function getUsersForOrderDate($date) {
+        $sql = $this->db->prepare("SELECT o.order_id, o.place_id, o.place_name, o.date, u.id, CONCAT( u.firstname, ' ', u.lastname ) AS name, o.time
+                                    FROM users u LEFT JOIN (
+                                    SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+                                    FROM orders o, places p
+                                    WHERE p.id = o.place_id
+                                    AND o.date = :date
+                                    ) AS o ON u.id = o.user_id");
+        if ($sql->execute(array("date" => $date->format("Y-m-d")))) {
             return $sql->fetchAll();
         }
         return null;

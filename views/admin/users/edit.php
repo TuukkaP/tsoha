@@ -13,7 +13,7 @@
     </thead>
     <tr>
     <form action="<?php echo URL . 'users/editSave/'.$this->user['id'] ; ?>" method="POST">
-        <td><input type = "text" name = "username" required="required" value="<?php echo $this->user['username'] ?>"/></td>
+        <td><label><?php echo $this->user['username'] ?></label><input type = "hidden" name = "username" value="<?php echo $this->user['username'] ?>"/></td>
         <td><input type = "text" name = "firstname" value="<?php echo $this->user['firstname'] ?>"/></td>
         <td><input type = "text" name = "lastname" value="<?php echo $this->user['lastname'] ?>"/></td>
         <td><input type = "text" name = "address" value="<?php echo $this->user['address'] ?>"/></td>

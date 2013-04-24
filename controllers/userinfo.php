@@ -38,7 +38,8 @@ class UserInfo extends Controller {
         if ($_POST["password"] != $_POST["passwordVerification"]) {
             $this->view->msg = "Salasanat eivät täsmää!";
         } else {
-            $this->view->msg = $this->model->changePassword($id, $_POST["password"]);
+            Session::init();
+            $this->view->msg = $this->model->changePassword($id, $_POST["password"], Session::get("username"));
         }
         $this->view->render('user/password');
     }
