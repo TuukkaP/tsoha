@@ -12,7 +12,8 @@ class userOrders extends Controller {
 
     function index($inputDate = null) {
         $date = $this->model->getDate($inputDate);
-        $tree = (new TreeCreator())->buildTree($this->model->getList($place_id = "all", $date, Session::get("id")));
+        $tree = new TreeCreator();
+        $tree->buildTree($this->model->getList($place_id = "all", $date, Session::get("id")));
         $this->view->begin = $date;
         $this->view->place_id = $place_id;
         $this->view->weekdayNames = $this->model->getWeekdays();

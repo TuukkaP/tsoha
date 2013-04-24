@@ -16,13 +16,13 @@ class userOrdersModel extends Model {
         } else {
             $placeSQL = "";
         }
-        $sql = $this->db->prepare("SELECT o.id as order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, CONCAT( u.firstname, ' ', u.lastname ) AS name, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+        $sql = $this->db->prepare("SELECT o.id as order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, ( firstname ||  ' ' || lastname ) AS name, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
 FROM orders o, places p, users u
 WHERE o.user_id = :id
 AND u.id = o.user_id
 " . $placeSQL . "
 AND p.id = o.place_id
-AND o.date < DATE_ADD( :date, INTERVAL 4 WEEK )
+AND o.date < (date(:date) + 28 )
 AND o.date >= DATE( :date )
 ORDER BY place_name ASC");
         if ($sql->execute(array(":id" => $user_id, ":date" => $date->format('Y-m-d')))) {
@@ -54,12 +54,12 @@ ORDER BY place_name ASC");
         } else {
             $placeSQL = "";
         }
-        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
                                     FROM orders o, places p
                                     WHERE o.user_id IS NULL
                                     " . $placeSQL . "
                                     AND p.id = o.place_id
-                                    AND o.date < DATE_ADD( :date, INTERVAL 4 WEEK )
+                                    AND o.date < (date(:date) + 28 )
                                     AND o.date >= DATE( :date )
                                     ORDER BY place_name ASC");
         if ($sql->execute(array(":date" => $date->format('Y-m-d')))) {
@@ -70,7 +70,7 @@ ORDER BY place_name ASC");
 
     public function getOrder($id) {
         $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, TIME_FORMAT( o.order_start, '%H:%i' ) AS order_start, TIME_FORMAT( o.order_end, '%H:%i' ) AS order_end
+        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, to_char( o.order_start, 'HH24:MI' ) AS order_start, to_char( o.order_end, 'HH24:MI' ) AS order_end
                                     FROM orders o, places p
                                     WHERE o.id = :id
                                     AND p.id = o.place_id");

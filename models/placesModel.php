@@ -13,10 +13,14 @@ class PlacesModel extends Model {
         if ($sql->execute()) {
             return $sql->fetchAll();
         }
-        return null;
+        return false;
     }
 
-    public function create($data) {
+    public function create() {
+        $data = array();
+        $data['name'] = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+        $data['address'] = filter_var($_POST['address'], FILTER_SANITIZE_STRING);
+        $data['info'] = filter_var($_POST['info'], FILTER_SANITIZE_STRING);
         $sql = $this->db->prepare('INSERT INTO places (name, address, info) 
             VALUES (?,?,?)');
         if ($sql->execute(array($data['name'], $data['address'], $data['info']))) {
@@ -27,7 +31,7 @@ class PlacesModel extends Model {
 
     public function delete($id) {
         $sql = $this->db->prepare('DELETE FROM places WHERE id = ?');
-        if ($sql->execute(array($id))) {
+        if ($sql->execute(array(filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
             return true;
         }
         return false;
@@ -35,15 +39,20 @@ class PlacesModel extends Model {
 
     public function getPlace($id) {
         $sql = $this->db->prepare('SELECT id,name,address,info FROM places WHERE id = ?');
-        if ($sql->execute(array($id))) {
+        if ($sql->execute(array(filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
             return $sql->fetch();
         }
-        return null;
+        return false;
     }
-    
-        public function editSave($data) {
+
+    public function editSave($id) {
+        $data = array();
+        $data['id'] = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+        $data['name'] = filter_var($_POST['name'], FILTER_SANITIZE_STRING);
+        $data['address'] = filter_var($_POST['address'], FILTER_SANITIZE_STRING);
+        $data['info'] = filter_var($_POST['info'], FILTER_SANITIZE_STRING);
         $sql = $this->db->prepare('UPDATE places SET name = ?,address = ?,info = ? WHERE id = ?');
-        if ($sql->execute(array($data['name'], $data['address'], $data['info'], $data['id'] ))) {
+        if ($sql->execute(array($data['name'], $data['address'], $data['info'], $data['id']))) {
             return true;
         }
         return false;

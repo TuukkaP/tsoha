@@ -30,7 +30,8 @@ echo "<h1>Tilaukset :: " . $showDate->format("j.n.y") . "-" . $showDate->modify(
     <select name="weeks">
         <?php
         if ($year == null) {
-            $year = (new DateTime('this year'))->format('y');
+            $createDate = new DateTime('this year');
+            $year = $createDate->format('y');
         }
         $firstDayOfTheYear = new DateTime("first day of January 20" . $year);
         $from = $firstDayOfTheYear;

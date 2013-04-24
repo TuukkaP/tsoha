@@ -16,20 +16,21 @@ class LoginModel extends Model {
         if ($sql->execute(array($username, $hashedpassword))) {
             $data = $sql->fetch();
             $count = $sql->rowCount();
+            if ($count == 1) {
+                $this->setLogin($data, $count);
+                return true;
+            }
         } else {
-            exit;
+            return false;
         }
+    }
 
-        if ($count == 1) {
-            Session::init();
-            Session::set('id', $data['id']);
-            Session::set('role', $data['role']);
-            Session::set('username', $data['username']);
-            Session::set('login', true);
-            header("location: ../main/index");
-        } else {
-            header("location: ../login/wrong");
-        }
+    public function setLogin($data) {
+        Session::init();
+        Session::set('id', $data['id']);
+        Session::set('role', $data['role']);
+        Session::set('username', $data['username']);
+        Session::set('login', true);
     }
 
 }

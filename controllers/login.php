@@ -15,7 +15,7 @@ class Login extends Controller {
             $this->view->render('login/index');
         } else {
             $this->view->msg = 'Olet jo kirjautunut sisään!';
-            $this->view->render('main/msg');
+            $this->view->render('main/index');
         }
     }
 
@@ -23,15 +23,16 @@ class Login extends Controller {
         Session::init();
         $logged = Session::get('login');
         if ($logged == false) {
-            $this->model->doLogin();
+            if ($this->model->doLogin()) {
+                $this->view->render('main/index');
+            } else {
+                $this->view->msg = "Sisäänkirjautuminen epäonnistui!";
+                $this->view->render('login/index');
+            }
         } else {
-            $this->view->msg = 'Olet jo kirjautunut sisään! ' . $session->username;
-            $this->view->render('main/msg');
+            $this->view->msg = 'Olet jo kirjautunut sisään! ' . Session::get('username');
+            $this->view->render('main/index');
         }
-    }
-
-    function wrong() {
-        $this->view->render('login/loginerror');
     }
 
 }

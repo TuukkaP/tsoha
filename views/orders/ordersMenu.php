@@ -1,6 +1,6 @@
 <?php
 if (!empty($_POST['weeks'])) {
-    header("location: " . filter_var(trim(URL . "orders/index/" . $_POST['weeks']), FILTER_SANITIZE_URL));
+    header("location: " . filter_var(trim(URL . "userOrders/index/" . $_POST['weeks']), FILTER_SANITIZE_URL));
 }
 $date = $this->begin;
 $dateCopy = clone $date;
@@ -30,7 +30,8 @@ echo "<h1>Tilaukset :: " . $showDate->format("j.n.y") . "-" . $showDate->modify(
     <select name="weeks">
         <?php
         if ($year == null) {
-            $year = (new DateTime('this year'))->format('y');
+            $tempYear = new DateTime('this year');
+            $year = $tempYear->format('y');
         }
         $firstDayOfTheYear = new DateTime("first day of January 20" . $year);
         $from = $firstDayOfTheYear;

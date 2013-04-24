@@ -4,7 +4,6 @@ require_once LIBS . 'Model.php';
 
 class OrdersModel extends Model {
 
-
     public function __construct() {
         parent::__construct();
     }
@@ -26,16 +25,16 @@ class OrdersModel extends Model {
         } else {
             $placeSQL = "";
         }
-        $sql = $this->db->prepare("SELECT order_id, place_id, place_name,  date, user_id, CONCAT( firstname, ' ', lastname ) AS name, time
-                                    FROM ( SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, o.user_id, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+        $sql = $this->db->prepare("SELECT order_id, place_id, place_name,  date, user_id, ( firstname ||  ' ' || lastname ) AS name, time
+                                    FROM ( SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, o.user_id, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
                                     FROM orders o, places p
-                                    WHERE o.date < DATE_ADD(:date, INTERVAL 4 WEEK )
-                                    AND o.date >= DATE( :date )
+                                    WHERE  o.date < (date(?) + 28 )
+                                    AND o.date >= DATE( ? )
                                     " . $placeSQL . "
                                     AND p.id = o.place_id
                                     ORDER BY place_name ASC) AS orders
                                     LEFT OUTER JOIN users ON user_id = id");
-        if ($sql->execute(array(":date" => $date->format('Y-m-d')))) {
+        if ($sql->execute(array($date->format('Y-m-d'), $date->format('Y-m-d')))) {
             return $sql->fetchAll();
         }
         return null;
@@ -47,13 +46,13 @@ class OrdersModel extends Model {
         } else {
             $placeSQL = "";
         }
-        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, o.user_id, CONCAT( u.firstname, ' ', u.lastname ) AS name, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, o.user_id, ( firstname ||  ' ' || lastname ) AS name, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
                                     FROM orders o, places p, users u
                                     WHERE o.user_id = :id
                                     AND u.id = o.user_id
                                     " . $placeSQL . "
                                     AND p.id = o.place_id
-                                    AND o.date < DATE_ADD( :date, INTERVAL 4 WEEK )
+                                    AND o.date < (date(:date) + 28 )
                                     AND o.date >= DATE( :date )
                                     ORDER BY place_name ASC");
         if ($sql->execute(array(":id" => filter_var($id, FILTER_SANITIZE_NUMBER_INT), ":date" => $date->format('Y-m-d')))) {
@@ -82,12 +81,12 @@ class OrdersModel extends Model {
         } else {
             $placeSQL = "";
         }
-        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id as place_id, p.name AS place_name, date, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
                                     FROM orders o, places p
                                     WHERE o.user_id IS NULL
                                     " . $placeSQL . "
                                     AND p.id = o.place_id
-                                    AND o.date < DATE_ADD( :date, INTERVAL 4 WEEK )
+                                    AND o.date < (date(:date) + 28 )
                                     AND o.date >= DATE( :date )
                                     ORDER BY place_name ASC");
         if ($sql->execute(array(":date" => $date->format('Y-m-d')))) {
@@ -97,7 +96,7 @@ class OrdersModel extends Model {
     }
 
     public function getUserList() {
-        $sql = $this->db->prepare("SELECT id, CONCAT(firstname, ' ', lastname) as name FROM users");
+        $sql = $this->db->prepare("SELECT id, ( firstname ||  ' ' || lastname ) AS name FROM users");
         if ($sql->execute()) {
             return $sql->fetchAll();
         }
@@ -105,11 +104,11 @@ class OrdersModel extends Model {
     }
 
     public function getOrder($id) {
-        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, TIME_FORMAT( o.order_start, '%H:%i' ) AS order_start, TIME_FORMAT( o.order_end, '%H:%i' ) AS order_end
+        $sql = $this->db->prepare("SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, to_char( o.order_start, 'HH24:MI' ) AS order_start, to_char( o.order_end, 'HH24:MI' ) AS order_end
                                     FROM orders o, places p
-                                    WHERE o.id = :id
+                                    WHERE o.id = ?
                                     AND p.id = o.place_id");
-        if ($sql->execute(array(":id" => filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
+        if ($sql->execute(array(filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
             return $sql->fetch();
         }
         return null;
@@ -124,9 +123,9 @@ class OrdersModel extends Model {
     }
 
     public function getUsersForOrderDate($id) {
-        $sql = $this->db->prepare("SELECT o.order_id, o.place_id, o.place_name, o.date, u.id, CONCAT( u.firstname, ' ', u.lastname ) AS name, o.time
+        $sql = $this->db->prepare("SELECT o.order_id, o.place_id, o.place_name, o.date, u.id, ( firstname ||  ' ' || lastname ) AS name, o.time
                                     FROM users u LEFT JOIN (
-                                    SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, CONCAT( TIME_FORMAT( o.order_start, '%H:%i' ) , '-', TIME_FORMAT( o.order_end, '%H:%i' ) ) AS time
+                                    SELECT o.id AS order_id, o.place_id AS place_id, p.name AS place_name, date, o.user_id, ( to_char( o.order_start, 'HH24:MI' ) ||  '-' || to_char( o.order_end, 'HH24:MI' ) ) AS time
                                     FROM orders o, places p
                                     WHERE p.id = o.place_id
                                     AND o.date = (SELECT date FROM orders WHERE id = :id )
@@ -146,9 +145,8 @@ class OrdersModel extends Model {
         $date = DateTime::createFromFormat('j.n.y', filter_var($_POST["date"], FILTER_SANITIZE_SPECIAL_CHARS));
         $sql = $this->db->prepare("INSERT INTO orders (place_id ,user_id ,date ,order_start ,order_end) 
             VALUES (?,?,?,?,?)");
-        if ($sql->execute(array($_POST["place_id"], $_POST["user_id"], $date->format("Y-m-d"), $_POST["start_hour"] . ":" . $_POST["start_min"] . ":00", $_POST["end_hour"] . ":" . $_POST["end_min"] . ":00"))) {
-            $result = $this->getOrder($this->db->lastInsertId());
-            return "Vuoro: " . (new DateTime($result["date"]))->format('j.n.y') . ", " . $result["place_name"] . ", " . $result["order_start"] . "-" . $result["order_end"] . " lisätty!";
+        if ($sql->execute(array($_POST["place_id"], $user_id, $date->format("Y-m-d"), $_POST["start_hour"] . ":" . $_POST["start_min"] . ":00", $_POST["end_hour"] . ":" . $_POST["end_min"] . ":00"))) {
+            return "Vuoro: ".$date->format("Y-m-d")." lisätty!";
         }
         return "Vuoron lisäys epäonnistui!";
     }
@@ -163,7 +161,8 @@ class OrdersModel extends Model {
             WHERE id = ?");
         if ($sql->execute(array($_POST["place_id"], $_POST["user_id"], $date->format("Y-m-d"), $_POST["start_hour"] . ":" . $_POST["start_min"] . ":00", $_POST["end_hour"] . ":" . $_POST["end_min"] . ":00", $order_id))) {
             $result = $this->getOrder($order_id);
-            return "Vuoro: " . (new DateTime($result["date"]))->format('j.n.y') . ", " . $result["place_name"] . ", " . $result["order_start"] . "-" . $result["order_end"] . "  muokattu!";
+            $resdate = new DateTime($result["date"]);
+            return "Vuoro: " . $resdate->format('j.n.y') . ", " . $result["place_name"] . ", " . $result["order_start"] . "-" . $result["order_end"] . "  muokattu!";
         }
         return "Vuoron muokkaus epäonnistui!";
     }
@@ -172,7 +171,8 @@ class OrdersModel extends Model {
         $toBeDeleted = $this->getOrder($id);
         $sql = $this->db->prepare("DELETE FROM orders WHERE id = ?");
         if ($sql->execute(array(filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
-            return "Vuoro: " . (new DateTime($toBeDeleted["date"]))->format('j.n.y') . ", " . $toBeDeleted["place_name"] . ", " . $toBeDeleted["order_start"] . "-" . $toBeDeleted["order_end"] . "  poistettu!";
+            $resdate = new DateTime($toBeDeleted["date"]);
+            return "Vuoro: " . $resdate->format('j.n.y') . ", " . $toBeDeleted["place_name"] . ", " . $toBeDeleted["order_start"] . "-" . $toBeDeleted["order_end"] . "  poistettu!";
         }
         return "Poistaminen epäonnistui!";
     }

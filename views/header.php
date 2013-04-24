@@ -23,7 +23,7 @@
                     <a href="<?php echo URL; ?>places/">Paikat</a>
                     <a href="<?php echo URL; ?>orders/">Tilaukset</a>
                     <?php else: ?>
-                    <a href="<?php echo URL; ?>userinfo/">Käyttäjätiedot</a>
+                    <a href="<?php echo URL; ?>userInfo/">Käyttäjätiedot</a>
                     <a href="<?php echo URL; ?>userOrders/">Vuorolista</a>
                 <?php endif; ?>
                 

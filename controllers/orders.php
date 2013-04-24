@@ -11,8 +11,11 @@ class Orders extends Controller {
     }
 
     function index($place_id = "all", $inputDate = null, $user = "all") {
+        Session::init();
+        Session::set("date", $inputDate);
         $date = $this->model->getDate($inputDate);
-        $tree = (new TreeCreator())->buildTree($this->model->getList($place_id, $date, $user));
+        $tree = new TreeCreator();
+        $tree->buildTree($this->model->getList($place_id, $date, $user));
         $this->view->begin = $date;
         $this->view->place_id = $place_id;
         $this->view->selectedUser = $user;
@@ -46,14 +49,14 @@ class Orders extends Controller {
         if (isset($_POST["submit"])) {
             $this->view->msg = $this->model->saveOrder();
         }
-        $this->index("all", $_POST["date"], "all");
+        $this->index("all", Session::get("date"), "all");
     }
 
     function updateOrder() {
         if (isset($_POST["submit"])) {
             $this->view->msg = $this->model->updateOrder();
         }
-        $this->index("all", $_POST["date"], "all");
+        $this->index("all", Session::get("date"), "all");
     }
 
     function deleteOrder($id) {

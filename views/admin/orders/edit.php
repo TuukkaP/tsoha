@@ -3,7 +3,8 @@
 //    print_r($this->order);
 //    print_r($this->users);
 //    print_r($this->places);
-    $date = (new DateTime($this->order["date"]))->modify("-2 week");
+    $date = new DateTime($this->order["date"]);
+    $date->modify("-2 week");
     $origDate = new DateTime($this->order["date"]);
     $startTimes = explode(":", $this->order["order_start"]);
     $endTimes = explode(":", $this->order["order_end"]);
