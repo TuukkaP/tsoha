@@ -5,17 +5,6 @@ class FrontController {
     private $_url = null;
     private $_controller = null;
 
-    public function run() {
-        $this->_getUrl();
-        if (empty($this->_url[0])) {
-            $this->_loadDefController();
-            return false;
-        }
-
-        $this->_loadController();
-        $this->_callControllerMethod();
-    }
-
     private function _getUrl() {
         if (isset($_GET['url'])) {
             $url = $_GET['url'];
@@ -27,7 +16,7 @@ class FrontController {
         }
     }
 
-    private function _loadDefController() {
+    private function _defController() {
         require "controllers/index.php";
         $this->_controller = new Index();
         $this->_controller->index();
@@ -48,9 +37,10 @@ class FrontController {
     /**
      * Kutsutaan oikeaa kontrolleria oikealla määrällä parametreja.
      */
-    private function _callControllerMethod() {
+    private function _controllerMethod() {
         $length = count($this->_url);
 
+        // Tarkistetaan löytyykö controllerista kysyttyä metodia, jos ei niin -> error
         if ($length > 1) {
             if (!method_exists($this->_controller, $this->_url[1])) {
                 $this->_error();
@@ -69,11 +59,23 @@ class FrontController {
         }
     }
 
+    // Virhesivun renderöinti
     private function _error() {
         require 'controllers/error.php';
         $this->_controller = new Error();
         $this->_controller->index();
         return false;
+    }
+
+    public function run() {
+        $this->_getUrl();
+        if (empty($this->_url[0])) {
+            $this->_defController();
+            return false;
+        }
+
+        $this->_loadController();
+        $this->_controllerMethod();
     }
 
 }
