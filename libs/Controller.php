@@ -10,7 +10,7 @@ class Controller {
         $path = 'models/' . $name . 'Model.php';
         if (file_exists($path)) {
             require 'models/' . $name . 'Model.php';
-            $modelName = $name . 'Model';
+            $modelName = ucfirst($name) . 'Model';
             $this->model = new $modelName();
         }
     }

@@ -1,13 +1,16 @@
 <?php
-include_once LIBS.'Controller.php';
+
+include_once LIBS . 'Controller.php';
+
 class Index extends Controller {
 
     function __construct() {
         parent::__construct();
+        Lock::checkLogin();
     }
 
     function index() {
-        $this->view->render('index/index');
+            $this->view->render('index/index');
     }
 
     function secret() {
