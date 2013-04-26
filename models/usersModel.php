@@ -66,5 +66,14 @@ class UsersModel extends Model {
         return false;
     }
 
+    public function changePassword($id, $password, $username) {
+        $hashedPassword = hash("sha256", filter_var(trim($password), FILTER_SANITIZE_STRING) . trim($username));
+        $sql = $this->db->prepare('UPDATE users SET password = ? WHERE id = ?');
+        if ($sql->execute(array($hashedPassword, filter_var($id, FILTER_SANITIZE_NUMBER_INT)))) {
+            return "Salasanan vaihto onnistui!";
+        }
+        return "Salasanan vaihto epäonnistui!";
+    }
+
 }
 

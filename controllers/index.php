@@ -6,7 +6,6 @@ class Index extends Controller {
 
     function __construct() {
         parent::__construct();
-        Lock::checkLogin();
     }
 
     function index() {

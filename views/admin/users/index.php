@@ -1,8 +1,9 @@
 
 <div class="UserTable" >
-    <?php if (isset($this->msg)) {
+    <?php
+    if (isset($this->msg)) {
         echo $this->msg;
-    } 
+    }
     ?>
     <table>
         <thead> 
@@ -18,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this->userList as $key => $value): ?>
+<?php foreach ($this->userList as $key => $value): ?>
                 <tr>
                     <td> <?php echo $value['username']; ?></td>
                     <td> <?php echo $value['firstname']; ?></td>
@@ -29,8 +30,10 @@
                     <td> <a href="<?php echo URL . 'users/edit/' . $value['id']; ?>">Muokkaa</a></td>
                     <td> <a href="<?php echo URL . 'users/delete/' . $value['id']; ?>">Poista</a></td>
                 </tr>
-            <?php endforeach; ?>
+<?php endforeach; ?>
     </table>
     <br/>
     <a href="<?php echo URL . 'users/create/'; ?>">Lisää uusi käyttäjä</a>
+    <br/><br/>
+    <a href="<?php echo URL . 'users/password/'; ?>">Vaihda salasana</a>
 </div>
