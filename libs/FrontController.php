@@ -21,7 +21,7 @@ class FrontController {
     // Luetaan index.php?url= perässä olevat parametrit "/" erotettuna url taulukkoon
     private function _parseUrl() {
         if (isset($_GET['url'])) {
-            $this->_url = explode('/', strtolower(filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL)));
+            $this->_url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
         } else {
             $url = null;
         }
